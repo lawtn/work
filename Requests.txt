@@ -1,0 +1,65 @@
+CREATE TABLE Client (
+    IDClient   INT (32) PRIMARY KEY
+                        NOT NULL
+                        REFERENCES Operation (IDClient) 
+                        UNIQUE,
+    nameClient VARCHAR  NOT NULL,
+    phone      VARCHAR,
+    passport   VARCHAR
+);
+
+CREATE TABLE Course (
+    dateCourse DATETIME PRIMARY KEY ON CONFLICT IGNORE,
+    IDCurrency INT      UNIQUE
+                        NOT NULL
+                        REFERENCES Currency (IDCurrency),
+    NBRBsell   DOUBLE,
+    NBRBbuy    DOUBLE,
+    sell       DOUBLE,
+    buy        DOUBLE
+);
+
+CREATE TABLE Currency (
+    IDCurrency   INT     PRIMARY KEY
+                         UNIQUE
+                         NOT NULL,
+    nameCurrency VARCHAR UNIQUE
+                         NOT NULL,
+    mark         VARCHAR UNIQUE
+                         NOT NULL,
+    country      VARCHAR UNIQUE
+                         NOT NULL
+);
+
+CREATE TABLE Operation (
+    IDOperation INT      NOT NULL
+                         PRIMARY KEY
+                         UNIQUE,
+    dateOpen    DATETIME NOT NULL,
+    IDCurrency  INT      NOT NULL
+                         REFERENCES Currency (IDCurrency),
+    IDType      INT      NOT NULL
+                         REFERENCES typeOperation (IDType),
+    sum         DOUBLE   NOT NULL,
+    IDOperator  INT      NOT NULL
+                         REFERENCES Operator (IDOperator),
+    IDClient    INT      NOT NULL
+                         REFERENCES Client (IDClient) 
+);
+
+CREATE TABLE Operator (
+    IDOperator   INT     UNIQUE
+                         NOT NULL
+                         PRIMARY KEY,
+    nameOperator VARCHAR NOT NULL,
+    phone        VARCHAR UNIQUE
+                         NOT NULL
+);
+
+CREATE TABLE typeOperation (
+    IDType        INT     PRIMARY KEY
+                          UNIQUE
+                          NOT NULL,
+    nameOperation VARCHAR NOT NULL
+                          UNIQUE
+);
